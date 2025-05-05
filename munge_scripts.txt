@@ -1,0 +1,36 @@
+python munge_sumstats.py \
+--sumstats data\GCST90132223\GCST90132223_buildGRCh37.tsv \
+--snp variant_id \
+--N 97173 \
+--a1 effect_allele \
+--a2 other_allele \
+--p p_value \
+--out rarth
+
+Metadata:
+Mean chi^2 = 1.643
+Lambda GC = 1.137
+Max chi^2 = 1479.5
+26265 Genome-wide significant SNPs (some may have been removed by filtering).
+
+python munge_sumstats.py \
+--sumstats GCST90472771.tsv \
+--snp base_pair_location \
+--N 494544 \
+--a1 effect_allele \
+--a2 other_allele \
+--p p_value \
+--out psoria
+
+Metadata:
+Mean chi^2 = 2.109
+Lambda GC = 1.178
+Max chi^2 = 1480.885
+36419 Genome-wide significant SNPs (some may have been removed by filtering).
+
+ldsc.py \
+--rg scz.sumstats.gz,bip.sumstats.gz \
+--ref-ld-chr eur_w_ld_chr/ \
+--w-ld-chr eur_w_ld_chrf/ \
+--out scz_bip
+

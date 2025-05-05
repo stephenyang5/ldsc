@@ -1,3 +1,10 @@
+# Personal Work
+
+Did not filter by HapMap3 using --merge flag
+
+Edited the parse_dat() function of munge_sumstats.py to corece all values to numeric ones. character inputs are converted to Nan, and object numbers become numbers.
+Running this modification there were 133 non numeric p-values, which I dropped, and 2050 SNPs with P outside of (0,1] which were also dropped.
+
 
 # LDSC (LD SCore) `v1.0.1`
 

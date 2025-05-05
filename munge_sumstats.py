@@ -244,6 +244,16 @@ def parse_dat(dat_gen, convert_colname, merge_alleles, log, args):
         drops['NA'] += old - len(dat)
         dat.columns = map(lambda x: convert_colname[x], dat.columns)
 
+        for col in dat.columns:
+            if col in numeric_cols:
+                dat[col] = pd.to_numeric(dat[col], errors='coerce')
+                
+        if 'P' in dat.columns:
+            bad_pvals = dat['P'].isna()
+            if bad_pvals.any():
+                print("Non-numeric p-values found ({} total):".format(bad_pvals.sum()))
+                print(dat.loc[bad_pvals, ['P']].head(10))  # Show a few
+
         wrong_types = [c for c in dat.columns if c in numeric_cols and not np.issubdtype(dat[c].dtype, np.number)]
         if len(wrong_types) > 0:
             raise ValueError('Columns {} are expected to be numeric'.format(wrong_types))
