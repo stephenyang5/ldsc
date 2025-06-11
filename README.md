@@ -1,10 +1,38 @@
 # Personal Work
 
-Did not filter by HapMap3 using --merge flag
+Filtered filter by HapMap3 using --merge flag
 
 Edited the parse_dat() function of munge_sumstats.py to corece all values to numeric ones. character inputs are converted to Nan, and object numbers become numbers.
 Running this modification there were 133 non numeric p-values, which I dropped, and 2050 SNPs with P outside of (0,1] which were also dropped.
 
+ 
+# For Sumstats in the form 1:100000012_G_T	
+
+First use an AWK command to run a regex and convert into CHROM ID SNP format.
+
+e.g.
+
+# Extract CHR, POS from your file
+awk 'BEGIN{FS=OFS="\t"} NR>1 {
+  split($1,a,":|_");
+  print a[1], a[2], a[3], a[4];
+}' gwas_data/.txt > cd_build37_40266_20161107.txt
+
+Side note, you need to annotate GCF_000001405 with chromosome IDs since it is in RefSeq format
+
+
+
+Then query this file to collate rsIDs  GCST has chromosome names in the NC refseq format. Therefore, we must rename them to numerical chromosome numbers which is what bcft tools recognizes. After doing this, can query the GCST reference file for rsids.
+
+This command renames the chromosomes
+bcftools annotate --rename-chrs chr_rename.txt -O z -o renamed.GCF_000001405.25.vcf.gz GCF_000001405.25.gz
+
+Query renamed gcf file for rsids of the chrom/pos found in GWAS
+bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\t%ID\n' -R markers_for_query.tsv All_20180418.vcf.gz > rsid_lookup.tsv
+
+
+
+Finally, use pandas operations to insert rsIDs into original file using merge_rsid_gwas.txt
 
 # LDSC (LD SCore) `v1.0.1`
 

@@ -31,11 +31,10 @@ done
 #convert to .bed/.bim/.fam format using plink2
 for chr in {1..22}; do
         plink2 \
-        --vcf 1000G_Phase3_VCFs/CEU.chr${chr}.vcf.gz \
-        --keep 1000G_CEU_data/ceu_ids.txt \
-        --max-alleles 2\
+        --vcf eur_w/ALL.chr${chr}.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz \
+        --max-alleles 2 \
         --make-bed \
-        --out 1000G_Phase3_VCFs/CEU.chr${chr}
+        --out eur_w/eur.chr${chr}
 done
 
 
@@ -105,3 +104,13 @@ for chr in {17..22}; do
 done
 
 #bcftools view 1000G_noCM_data/ALL.chr1.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz | grep -v '^#' | cut -f3 | head
+
+for chr in {1..5}; do
+    python ldsc.py \
+        --bfile eur_w_CM/eur.chr${chr}.cm \
+        --l2 \
+        --ld-wind-cm 1 \
+        --out eur_w_ld/chr${chr} \
+        --yes-really \
+        --thin-annot
+done
