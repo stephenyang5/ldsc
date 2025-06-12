@@ -10,7 +10,7 @@ This repo is forked from LDSC, a program written for various operation related t
 The summary statistics for these two files contain Marker identifiers instead of rsID, chromosome, and position. These are given in the format: 1:100000012_G_T
 which corresponds to chromosome, position, effect allele, other allele. 
 
-Therefore, I ran a regex over this column to parse out the required portions, queried them against an rsID reference file, and then merged the queried results into the raw data (producing a new output file). The methods for this can be found in 'marker_cols_conversion.sh'.
+Therefore, I ran a regex over this column to parse out the required portions, queried them against an rsID reference file, and then merged the queried results into the raw data (producing a new output file). The methods for this can be found in `marker_cols_conversion.sh`.
 
 Note that the rsID reference file gives chromosome numbers in RefSeq format e.g. NC_000001.10	is the name of chromosome 1. The process for this is also given in the `marker_cols_conversion.sh` file. (THIS NEEDS TO BE DONE STILL)
 
@@ -24,20 +24,14 @@ For the summary statistics I downloaded, please see the following link to a spre
 
 For the graphs generated I used pre-computed LD scores on the entire EUR population from the creators of LDSC. Their link to download is since deprecated. I downloaded these LD scores from [this location](https://zenodo.org/records/8182036).
 
-## 'calc_gen_correlation.sh'
+## `calc_gen_correlation.sh`
 This file contains all of the bash calls that I used in preparing my summary statistics for LDSC analysis. 
 
-'munge_sumstats.py' is the build in ldsc function used to standardize summary statistics to their formatting. There could be a clever way to loop through and munge, but since column names such as effect_allele, and population size vary between studies, I wrote this out manually. There is a loop for the actual genetic correlation calculation at the very end once data has been cleaned.
+`munge_sumstats.py` is the build in ldsc function used to standardize summary statistics to their formatting. There could be a clever way to loop through and munge, but since column names such as effect_allele, and population size vary between studies, I wrote this out manually. There is a loop for the actual genetic correlation calculation at the very end once data has been cleaned.
 
 ## plot_heatmap.py
 After working through the genetic correlation file, this plotting script will visualize the results in a heatmap.
 
- 
-# For Sumstats in the form 1:100000012_G_T	
-
-First use an AWK command to run a regex and convert into CHROM ID SNP format.
-
-e.g.
 
 # Extract CHR, POS from your file
 awk 'BEGIN{FS=OFS="\t"} NR>1 {
@@ -56,8 +50,6 @@ bcftools annotate --rename-chrs chr_rename.txt -O z -o renamed.GCF_000001405.25.
 
 Query renamed gcf file for rsids of the chrom/pos found in GWAS
 bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\t%ID\n' -R markers_for_query.tsv All_20180418.vcf.gz > rsid_lookup.tsv
-
-
 
 Finally, use pandas operations to insert rsIDs into original file using merge_rsid_gwas.txt
 
