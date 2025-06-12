@@ -1,9 +1,36 @@
 # Personal Work
+This is documentation for exploratory work looking at genetic correlation between AIDs. 
 
-Filtered filter by HapMap3 using --merge flag
+All the data is publicly available to download. If you cannot find the 'wget' function call or link that I used to download a piece of data let me know and I will update it!
 
-Edited the parse_dat() function of munge_sumstats.py to corece all values to numeric ones. character inputs are converted to Nan, and object numbers become numbers.
-Running this modification there were 133 non numeric p-values, which I dropped, and 2050 SNPs with P outside of (0,1] which were also dropped.
+# Formatting Summary Statistic Data
+This repo is forked from LDSC, a program written for various operation related to LD scores. It relies on inputted GWAS summary statistics having an rsID identifier in addition to of chromosome and position locations. However, not all raw summary statistic files contained this column and I therefore needed to go through and clean some datasets. The following is my workflow. 
+
+## Crohn's Disease and Ulcerative Colitis
+The summary statistics for these two files contain Marker identifiers instead of rsID, chromosome, and position. These are given in the format: 1:100000012_G_T
+which corresponds to chromosome, position, effect allele, other allele. 
+
+Therefore, I ran a regex over this column to parse out the required portions, queried them against an rsID reference file, and then merged the queried results into the raw data (producing a new output file). The methods for this can be found in 'marker_cols_conversion.sh'.
+
+Note that the rsID reference file gives chromosome numbers in RefSeq format e.g. NC_000001.10	is the name of chromosome 1. The process for this is also given in the 'marker_cols_conversion.sh' file. (THIS NEEDS TO BE DONE STILL)
+
+
+# Calculating LD scores 
+As an Excercise I Calculated LD scores in the CEU sub population of the 1000G EUR population. All of the code to do this can be seen in the calc_ld.sh with the exact commands that I used to operate on the data. While I was working, I had a /data/ subfolder in my working directory, but I removed folder organization from these scripts and it is not standardized. I will go back and fix so that once all data is downloaded, then the script can be run start to finish.
+
+For the summary statistics I downloaded, please see the following link to a spreadsheet that has all the data that I used
+
+# Calculating Genetic Correlation and LD Scores
+
+For the graphs generated I used pre-computed LD scores on the entire EUR population from the creators of LDSC. Their link to download is since deprecated. I downloaded these LD scores from [this location](https://zenodo.org/records/8182036).
+
+## 'calc_gen_correlation.sh'
+This file contains all of the bash calls that I used in preparing my summary statistics for LDSC analysis. 
+
+'munge_sumstats.py' is the build in ldsc function used to standardize summary statistics to their formatting. There could be a clever way to loop through and munge, but since column names such as effect_allele, and population size vary between studies, I wrote this out manually. There is a loop for the actual genetic correlation calculation at the very end once data has been cleaned.
+
+## plot_heatmap.py
+After working through the genetic correlation file, this plotting script will visualize the results in a heatmap.
 
  
 # For Sumstats in the form 1:100000012_G_T	
