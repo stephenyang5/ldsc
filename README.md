@@ -1,7 +1,7 @@
 # Personal Work
 This is documentation for exploratory work looking at genetic correlation between AIDs. 
 
-All the data is publicly available to download. If you cannot find the 'wget' function call or link that I used to download a piece of data let me know and I will update it!
+All data in this work is publicly available to download. If you cannot find the `wget` function call or link that I used to download a piece of data let me know and I will update it!
 
 # Formatting Summary Statistic Data
 This repo is forked from LDSC, a program written for various operation related to LD scores. It relies on inputted GWAS summary statistics having an rsID identifier in addition to of chromosome and position locations. However, not all raw summary statistic files contained this column and I therefore needed to go through and clean some datasets. The following is my workflow. 
@@ -12,11 +12,11 @@ which corresponds to chromosome, position, effect allele, other allele.
 
 Therefore, I ran a regex over this column to parse out the required portions, queried them against an rsID reference file, and then merged the queried results into the raw data (producing a new output file). The methods for this can be found in 'marker_cols_conversion.sh'.
 
-Note that the rsID reference file gives chromosome numbers in RefSeq format e.g. NC_000001.10	is the name of chromosome 1. The process for this is also given in the 'marker_cols_conversion.sh' file. (THIS NEEDS TO BE DONE STILL)
+Note that the rsID reference file gives chromosome numbers in RefSeq format e.g. NC_000001.10	is the name of chromosome 1. The process for this is also given in the `marker_cols_conversion.sh` file. (THIS NEEDS TO BE DONE STILL)
 
 
 # Calculating LD scores 
-As an Excercise I Calculated LD scores in the CEU sub population of the 1000G EUR population. All of the code to do this can be seen in the calc_ld.sh with the exact commands that I used to operate on the data. While I was working, I had a /data/ subfolder in my working directory, but I removed folder organization from these scripts and it is not standardized. I will go back and fix so that once all data is downloaded, then the script can be run start to finish.
+As an Excercise I Calculated LD scores in the CEU sub population of the 1000G EUR population. All of the code to do this can be seen in the calc_ld.sh with the exact commands that I used to operate on the data. While I was working, I have a `/data/` subfolder in my working directory, but I removed folder organization from these scripts and it is not standardized. I will go back and fix so that once all data is downloaded, then the script can be run start to finish.
 
 For the summary statistics I downloaded, please see the following link to a spreadsheet that has all the data that I used
 
